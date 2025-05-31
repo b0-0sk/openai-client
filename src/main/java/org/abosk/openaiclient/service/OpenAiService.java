@@ -33,8 +33,6 @@ public class OpenAiService {
 
     public String chat(String prompt) {
         log.info("🟡 Prompt original: [{}]", prompt);
-
-        // Normaliza espacios (espacios múltiples, tabs, saltos de línea → espacio simple)
         String normalizedPrompt = prompt.trim().replaceAll("\\s+", " ");
         log.info("🟢 Prompt normalized: [{}]", normalizedPrompt);
 
@@ -50,7 +48,7 @@ public class OpenAiService {
                 .block();
 
         String reply = response.choices().get(0).message().content();
-        log.info("🔵 Respuesta de OpenAI: [{}]", reply);
+        log.info("🔵 OpenAI response: [{}]", reply);
 
         return reply;
     }
