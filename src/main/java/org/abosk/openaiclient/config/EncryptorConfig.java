@@ -12,11 +12,14 @@ public class EncryptorConfig {
     @Value("${jasypt.encryptor.password}")
     private String password;
 
+    @Value("${jasypt.encryptor.algorithm}")
+    private String algorithm;
+
     @Bean(name = "jasyptStringEncryptor")
     public StringEncryptor stringEncryptor() {
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setPassword(password);
-        encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
+        encryptor.setAlgorithm(algorithm);
         encryptor.setStringOutputType("base64");
         return encryptor;
     }

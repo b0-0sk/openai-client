@@ -13,18 +13,18 @@ import java.util.Map;
 
 @Service
 public class OpenAiService {
-
     private static final Logger log = LoggerFactory.getLogger(OpenAiService.class);
 
     private final WebClient webClient;
 
+    @Value("${openai.api.model}") String model;
 
     public OpenAiService(
             @Value("${openai.api.url}") String apiUrl,
             @Value("${openai.api.key}") String apiKey
     ) {
-        log.info("🔧 Configurando OpenAI Service con URL: [{}]", apiUrl);
-        log.info("🔧 Usando clave de API: [{}]", apiKey);
+        log.info("🔧 Configuring OpenAI Service with URL: [{}]", apiUrl);
+        log.info("🔧 Using API key: [{}]", apiKey);
         this.webClient = WebClient.builder()
                 .baseUrl(apiUrl)
                 .defaultHeader("Authorization", "Bearer " + apiKey)
@@ -36,10 +36,10 @@ public class OpenAiService {
 
         // Normaliza espacios (espacios múltiples, tabs, saltos de línea → espacio simple)
         String normalizedPrompt = prompt.trim().replaceAll("\\s+", " ");
-        log.info("🟢 Prompt normalizado: [{}]", normalizedPrompt);
+        log.info("🟢 Prompt normalized: [{}]", normalizedPrompt);
 
         OpenAiRequest request = new OpenAiRequest(
-                "gpt-3.5-turbo",
+                model,
                 List.of(Map.of("role", "user", "content", normalizedPrompt))
         );
 
