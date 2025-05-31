@@ -26,6 +26,3 @@ jobs:
 
       - name: 📦 Build and test with Maven
         run: mvn clean verify -Djasypt.encryptor.password=${{ secrets.JASYPT_PASSWORD }}
-
-      - name: 📡 Update dependency graph
-        uses: advanced-security/maven-dependency-submission-action@v4
