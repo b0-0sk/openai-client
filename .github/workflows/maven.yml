@@ -1,0 +1,31 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: 🔐 Configure Jasypt password
+        run: echo "JASYPT_PASSWORD=${{ secrets.JASYPT_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: 📦 Build and test with Maven
+        run: mvn clean verify -Djasypt.encryptor.password=${{ secrets.JASYPT_PASSWORD }}
+
+      - name: 📡 Update dependency graph
+        uses: advanced-security/maven-dependency-submission-action@v4
