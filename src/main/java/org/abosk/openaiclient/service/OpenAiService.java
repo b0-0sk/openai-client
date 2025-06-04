@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class OpenAiService {
@@ -33,7 +34,13 @@ public class OpenAiService {
 
     public String chat(String prompt) {
         log.info("🟡 Prompt original: [{}]", prompt);
-        String normalizedPrompt = prompt.trim().replaceAll("\\s+", " ");
+        if (prompt == null) {
+            log.warn("⚠️ Prompt is null. Using empty string as fallback");
+        }
+        String normalizedPrompt = Optional.ofNullable(prompt)
+                .orElse("")
+                .trim()
+                .replaceAll("\\s+", " ");
         log.info("🟢 Prompt normalized: [{}]", normalizedPrompt);
 
         OpenAiRequest request = new OpenAiRequest(
